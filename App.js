@@ -1,20 +1,43 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import SearchScreen from './screens/SearchScreen';
+import ResultsScreen from './screens/ResultsScreen';
+import DetailsScreen from './screens/DetailsScreen';
+import { resultsHeaderOptions } from './styles/resultStyles';
+const Stack = createNativeStackNavigator();
+
+function SearchRoute({ navigation }) {
+    return (
+        <SearchScreen
+            onSearch={(query) => navigation.navigate('Results', { query })}
+        />
+    );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App() {
+    return (
+        <SafeAreaProvider>
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen
+                        name="Search"
+                        component={SearchRoute}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="Results"
+                        component={ResultsScreen}
+                        options={resultsHeaderOptions}
+                    />
+                    <Stack.Screen
+                        name="Details"
+                        component={DetailsScreen}
+                        options={{ ...resultsHeaderOptions, title: 'Show Details' }}
+                    />
+                </Stack.Navigator>
+            </NavigationContainer>
+        </SafeAreaProvider>
+    );
+}
