@@ -1,15 +1,14 @@
 import {
     ActivityIndicator,
     FlatList,
-    Pressable,
     Text,
     View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 import useShowSearch from '../hooks/useShowSearch';
 import styles from '../styles/resultStyles';
 import { colors } from '../styles/searchStyles';
+import ShowCard from '../components/ShowCard';
 
 export default function ResultsScreen({ navigation, route }) {
     const { query } = route.params;
@@ -69,26 +68,10 @@ export default function ResultsScreen({ navigation, route }) {
                     )
                 }
                 renderItem={({ item }) => (
-                    <Pressable
-                        accessibilityRole="button"
-                        accessibilityLabel={`View details for ${item.name}`}
-                        style={styles.card}
-                        onPress={() =>
-                            navigation.navigate('Details', { show: item })
-                        }
-                    >
-                        <View style={styles.poster}>
-                            <Text style={styles.secondary}>Poster</Text>
-                        </View>
-
-                        <View style={styles.cardBody}>
-                            <Text style={styles.showName}>{item.name}</Text>
-                            <Text style={styles.secondary}>{item.genre}</Text>
-                            <Text style={styles.secondary}>
-                                Rating: {item.rating}
-                            </Text>
-                        </View>
-                    </Pressable>
+                    <ShowCard
+                        show={item}
+                        onPress={() => navigation.navigate('Details', { show: item })}
+                    />
                 )}
             />
         </SafeAreaView>

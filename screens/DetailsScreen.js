@@ -1,6 +1,7 @@
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text,} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/detailStyles';
+import ShowPoster from '../components/ShowPoster';
 
 export default function DetailsScreen({ route }) {
     const { show } = route.params;
@@ -8,10 +9,7 @@ export default function DetailsScreen({ route }) {
     return (
         <SafeAreaView style={styles.screen} edges={['left', 'right', 'bottom']}>
             <ScrollView contentContainerStyle={styles.content}>
-                <View style={styles.poster}>
-                    <Text style={styles.secondary}>Poster</Text>
-                </View>
-
+                <ShowPoster key={show.id} image={show.image} />
                 <Text accessibilityRole="header" style={styles.title}>
                     {show.name}
                 </Text>
