@@ -1,10 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { searchShows } from '../services/tvmazeApi';
 
 export default function useShowSearch(query) {
     const [shows, setShows] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [attempt, setAttempt] = useState(0);
+
+    const retry = useCallback(() => {
+        setAttempt((previous) => previous + 1);
+    }, []);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -22,7 +27,7 @@ export default function useShowSearch(query) {
                 }
             } catch {
                 if (!controller.signal.aborted) {
-                    setError('Could not load shows. Please try again.');
+                    setError('Could not load shows. Check your connection and try again.');
                 }
             } finally {
                 if (!controller.signal.aborted) {
@@ -34,7 +39,7 @@ export default function useShowSearch(query) {
         loadShows();
 
         return () => controller.abort();
-    }, [query]);
+    }, [query, attempt]);
 
-    return { shows, loading, error };
+    return { shows, loading, error, retry };
 }

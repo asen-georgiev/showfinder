@@ -3,6 +3,7 @@ import {
     FlatList,
     Text,
     View,
+    Pressable,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useShowSearch from '../hooks/useShowSearch';
@@ -12,7 +13,7 @@ import ShowCard from '../components/ShowCard';
 
 export default function ResultsScreen({ navigation, route }) {
     const { query } = route.params;
-    const { shows, loading, error } = useShowSearch(query);
+    const { shows, loading, error,retry } = useShowSearch(query);
 
     const results = shows.map((show) => ({
         id: show.id,
@@ -62,9 +63,24 @@ export default function ResultsScreen({ navigation, route }) {
                             accessibilityLabel="Loading shows"
                         />
                     ) : (
-                        <Text style={styles.secondary}>
-                            {error || 'No shows found. Go back and try another title.'}
-                        </Text>
+                        <View style={styles.emptyState}>
+                            <Text style={styles.secondary}>
+                                {error || 'No shows found. Go back and try another title.'}
+                            </Text>
+
+                            {error ? (
+                                <Pressable
+                                    accessibilityRole="button"
+                                    onPress={retry}
+                                    style={({ pressed }) => [
+                                        styles.retryButton,
+                                        pressed && styles.retryButtonPressed,
+                                    ]}
+                                >
+                                    <Text style={styles.retryButtonText}>Retry</Text>
+                                </Pressable>
+                            ) : null}
+                        </View>
                     )
                 }
                 renderItem={({ item }) => (

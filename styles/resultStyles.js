@@ -59,4 +59,25 @@ export default StyleSheet.create({
         color: colors.muted,
         fontSize: 14,
     },
+    emptyState: {
+        gap: 16,
+    },
+    retryButton: {
+        alignSelf: 'flex-start',
+        minHeight: 48,
+        paddingHorizontal: 24,
+        paddingVertical: 12,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 12,
+        backgroundColor: colors.primary,
+    },
+    retryButtonPressed: {
+        opacity: 0.8,
+    },
+    retryButtonText: {
+        color: colors.onPrimary,
+        fontSize: 16,
+        fontWeight: '700',
+    },
 });
